@@ -8,16 +8,16 @@ Find the relationship of snort bandwidth and flow number and rule number.
 
 - try tcpreplay to snort
     - [x] tcprewrite to change ip/port
-    - [] how to change flow number?
+    - [ ] how to change flow number?
         - repeat flow, shift timestamp, then combine pcap files?
 
-- [] run snort in docker
+- [ ] run snort in docker
 
 - shell script
-    - [] change rules
-    - [] generate random flow
-    - [] tcpreplay to snort
-    - [] record result
+    - [ ] change rules
+    - [ ] generate random flow
+    - [ ] tcpreplay to snort
+    - [ ] record result
 
 
 ## Replay TCP packets
