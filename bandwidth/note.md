@@ -32,15 +32,15 @@ Find the relationship of snort bandwidth and flow number and rule number.
 `tcprewrite -i pcap/sample.pcapng -o pcap/sample_random.pcapng -s 234`
 
 ### Shift timestamp
-`editcap -t 1.23 pcap/sample.pcapng pcap/sample_shifted.pcapng`
+`editcap -t 0.00001 pcap/sample.pcapng pcap/sample_shifted.pcapng`
 
 ### Merge pcappng files
-`mergecap -w pcap/sample_merged.pcapng pcap/sample.pcapng pcap/sample_shifted.pcapng`
+`mergecap -w pcap/sample_merged.pcapng pcap/sample_random.pcapng pcap/sample_shifted.pcapng`
 
 ## Replay TCP packets
 
 ### tcpreplay
-`sudo tcpreplay -i lo pcap/sample.pcapng`
+`sudo tcpreplay -i lo pcap/sample_merged.pcapng`
 
 - `-x` multiplie
 - `-M` send rate
