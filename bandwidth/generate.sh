@@ -4,11 +4,12 @@ function show_help {
 echo "
 Usage: generate.sh [options]
 
-    -h                      show help
-    -v                      verbose
-    -n <flow number>        set flow number
-    -i <input filename>     set input file
-    -o <output filename>    set output file
+    -h                              show help
+    -v                              verbose
+    -n <flow number>                set flow number
+    -i <input filename>             set input file
+    -o <output filename>            set output file
+    -s <maximum timestamp shift>    set output file
 "
 }
 
@@ -23,8 +24,9 @@ flow_count=100
 verbose=0
 in_file=./pcap/sample.pcapng
 out_file=./pcap/out.pcapng
+max_shift=30
 
-while getopts "h?vn:o:i:" opt; do
+while getopts "h?vn:o:i:s:" opt; do
     case "$opt" in
         h|\?)
             show_help
@@ -38,6 +40,8 @@ while getopts "h?vn:o:i:" opt; do
             ;;
         o)  out_file=$OPTARG
             ;;
+        s)  max_shift=$OPTARG
+            ;;
     esac
 done
 
@@ -46,12 +50,20 @@ shift $((OPTIND-1))
 [ "${1:-}" = "--"  ] && shift
 
 if [[ $@ != '' ]] ; then
-    echo "ignoring $@"
+    echo "Unknown argument $@!" >&2; show_help; exit 1
 fi
 
 
 if ! [[ $flow_count =~ ^[0-9]+$ ]] ; then
-    echo "$flow_count is not a number!" >&2; exit 1
+    echo "$flow_count is not a number!" >&2; show_help; exit 1
+fi
+
+if ! [[ $max_shift =~ ^[0-9]+$ ]] ; then
+    echo "$max_shift is not a number!" >&2; show_help; exit 1
+fi
+
+if ! [ -f $in_file ] ; then
+    echo "Can't find input file $in_file!" >&2; show_help; exit 1
 fi
 
 # Remove old files
@@ -78,7 +90,7 @@ do
     tcprewrite -i $temp_dir/$file_name -o $temp_dir/$file_name -s $RANDOM
 
     # Shift timestamp
-    shift=$(echo "scale=8;($RANDOM+$RANDOM*32768)/(32767*32767)*120"  | bc)
+    shift=$(echo "scale=8;($RANDOM+$RANDOM*32768)/(32767*32767)*$max_shift"  | bc)
     editcap -t $shift $temp_dir/$file_name $temp_dir/$file_name
 
     if [[ $verbose == 1 ]] ; then echo $shift ; fi
