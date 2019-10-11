@@ -7,8 +7,12 @@ Usage: generate.sh [options]
     -h                      show help
     -v                      verbose
     -n <flow number>        set flow number
+    -i <input filename>     set input file
+    -o <output filename>    set output file
 "
 }
+
+cd "$(dirname $0)"
 
 temp_dir='.temp'
 
@@ -17,9 +21,10 @@ OPTIND=1
 
 flow_count=100
 verbose=0
-out_file=pcap/out.pcapng
+in_file=./pcap/sample.pcapng
+out_file=./pcap/out.pcapng
 
-while getopts "h?vn:o:" opt; do
+while getopts "h?vn:o:i:" opt; do
     case "$opt" in
         h|\?)
             show_help
@@ -28,6 +33,8 @@ while getopts "h?vn:o:" opt; do
         v)  verbose=1
             ;;
         n)  flow_count=$OPTARG
+            ;;
+        i)  in_file=$OPTARG
             ;;
         o)  out_file=$OPTARG
             ;;
@@ -48,7 +55,6 @@ if ! [[ $flow_count =~ ^[0-9]+$ ]] ; then
 fi
 
 # Remove old files
-cd "$(dirname $0)"
 
 if [ -d $temp_dir ] ; then
     rm -rf $temp_dir
@@ -66,7 +72,7 @@ do
     # Random port
     PORT_S=$((RANDOM+1024))
     PORT_O=$((RANDOM+1024))
-    tcprewrite -i pcap/sample.pcapng -o $temp_dir/$file_name -r 10000:$PORT_S,20000:$PORT_O
+    tcprewrite -i $in_file -o $temp_dir/$file_name -r 10000:$PORT_S,20000:$PORT_O
 
     # Random IP
     tcprewrite -i $temp_dir/$file_name -o $temp_dir/$file_name -s $RANDOM
