@@ -1,5 +1,5 @@
 # snort bandwidth
-Find the relationship of snort bandwidth and flow number and rule number.
+Find the relationship between snort bandwidth and flow/rule number.
 
 ## TODO
 
@@ -15,10 +15,11 @@ Find the relationship of snort bandwidth and flow number and rule number.
     - [ ] test flows using different rules
 
 - shell script
-    - [ ] change rules
-    - [x] generate random flow
+    - [x] generate random rules
+    - [x] generate random flows
     - [ ] tcpreplay to snort
     - [ ] record result
+    - [ ] auto-experiment and log error
 
 ## Tools
 - Tcpreplay
@@ -55,7 +56,7 @@ Find the relationship of snort bandwidth and flow number and rule number.
 ### Replay TCP packets
 
 #### tcpreplay
-`sudo tcpreplay -i lo pcap/sample_merged.pcapng`
+`sudo tcpreplay -i wlp0s20u7 pcap/sample_merged.pcapng`
 
 - `-x` multiplie
 - `-M` send rate
@@ -76,8 +77,8 @@ Find the relationship of snort bandwidth and flow number and rule number.
 sudo docker run -it --name snort --net=host \
     --cap-add=NET_ADMIN \
     -v `pwd`/log/:/var/log/snort/ \
-    -v `pwd`/rules/:/usr/local/etc/snort/rules/ \
-    -v `pwd`/etc/snort.lua:/usr/local/etc/snort/snort.lua \
+    -v `pwd`/test.rules:/usr/local/etc/snort/rules/rules/test.rules \
+    -v `pwd`/snort.lua:/usr/local/etc/snort/snort.lua \
     snort \
     snort -c /usr/local/etc/snort/snort.lua \
     -A fast \

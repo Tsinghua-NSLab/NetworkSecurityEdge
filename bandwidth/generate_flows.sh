@@ -1,15 +1,21 @@
 #! /bin/bash
 
+flow_count=100
+verbose=0
+in_file=./pcap/sample.pcapng
+out_file=./pcap/out.pcapng
+max_shift=30
+
 function show_help {
 echo "
-Usage: generate.sh [options]
+Usage: ./generate_flows.sh [options]
 
     -h                              show help
     -v                              verbose
-    -n <flow number>                set flow number
-    -i <input filename>             set input file
-    -o <output filename>            set output file
-    -s <maximum timestamp shift>    set output file
+    -n <flow_number>                set flow number, default $flow_count
+    -i <input_filename>             set input file, default $in_file
+    -o <output_filename>            set output file, default $out_file
+    -s <max_shift>                  set maximum timestamp shift(seconds), default $max_shift
 "
 }
 
@@ -19,12 +25,6 @@ temp_dir='.temp'
 
 # Argument parsing
 OPTIND=1
-
-flow_count=100
-verbose=0
-in_file=./pcap/sample.pcapng
-out_file=./pcap/out.pcapng
-max_shift=30
 
 while getopts "h?vn:o:i:s:" opt; do
     case "$opt" in
@@ -90,12 +90,12 @@ do
     tcprewrite -i $temp_dir/$file_name -o $temp_dir/$file_name -s $RANDOM
 
     # Shift timestamp
-    shift=$(echo "scale=8;($RANDOM+$RANDOM*32768)/(32767*32767)*$max_shift"  | bc)
-    editcap -t $shift $temp_dir/$file_name $temp_dir/$file_name
+    shift_t=$(echo "scale=8;($RANDOM+$RANDOM*32768)/(32767*32767)*$max_shift"  | bc)
+    editcap -t $shift_t $temp_dir/$file_name $temp_dir/$file_name
 
-    if [[ $verbose == 1 ]] ; then echo $shift ; fi
+    if [[ $verbose == 1 ]] ; then echo $shift_t ; fi
     let "flow_i += 1"
 done
 
 mergecap -w $out_file $temp_dir/*
-echo "$flow_count flows are generated."
+if [[ $verbose == 1 ]] ; then echo "$flow_count flows are generated to file $out_file." ; fi
