@@ -7,16 +7,19 @@ Find the relationship between snort bandwidth and flow/rule number.
     - [x] snort set rules
 
 - try tcpreplay to snort
-    - [x] tcprewrite to change ip/port
-    - [x] how to change flow number?
+    - [x] use tcprewrite to change ip/port
+    - [x] change flow number
 
 - run snort in docker
     - [x] snort listen to interface
-    - [ ] test flows using different rules
+    - [x] test flows using different rules
 
 - shell script
     - [x] generate random rules
+        - [x] random src and dst ip, random port
+        - [ ] add rules that matches the flow content
     - [x] generate random flows
+        - [ ] change payload
     - [ ] tcpreplay to snort
     - [ ] record result
     - [ ] auto-experiment and log error
@@ -56,7 +59,7 @@ Find the relationship between snort bandwidth and flow/rule number.
 ### Replay TCP packets
 
 #### tcpreplay
-`sudo tcpreplay -i wlp0s20u7 pcap/sample_merged.pcapng`
+`sudo tcpreplay -i wlp0s20u7 pcap/out.pcapng`
 
 - `-x` multiplie
 - `-M` send rate
@@ -84,4 +87,5 @@ sudo docker run -it --name snort --net=host \
     -A fast \
     -l /var/log/snort \
     -i wlp0s20u7
+sudo docker rm snort
 ```
