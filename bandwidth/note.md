@@ -22,6 +22,7 @@ Find the relationship between snort bandwidth and flow/rule number.
         - [ ] change payload
     - [ ] tcpreplay to snort
     - [ ] record result
+        - [ ] exclude unrelated packets?
     - [ ] auto-experiment and log error
 
 ## Tools
@@ -86,6 +87,27 @@ sudo docker run -it --name snort --net=host \
     snort -c /usr/local/etc/snort/snort.lua \
     -A fast \
     -l /var/log/snort \
-    -i wlp0s20u7
+    -i wlp0s20u7 \
 sudo docker rm snort
+```
+
+```
+sudo docker run -d --name snort --net=host \
+    --cap-add=NET_ADMIN \
+    -v `pwd`/log/:/var/log/snort/ \
+    -v `pwd`/test.rules:/usr/local/etc/snort/rules/rules/test.rules \
+    -v `pwd`/snort.lua:/usr/local/etc/snort/snort.lua \
+    snort \
+    snort -c /usr/local/etc/snort/snort.lua \
+    -A fast \
+    -l /var/log/snort \
+    -i wlp0s20u7 \
+```
+
+```
+sudo docker kill -s=SIGINT snort
+```
+
+```
+sudo docker logs snort | grep total_alerts >> log/out.log
 ```

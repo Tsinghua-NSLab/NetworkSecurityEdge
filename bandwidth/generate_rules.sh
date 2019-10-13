@@ -5,6 +5,7 @@ random_ip_port=0
 rule_count=10
 out_file=./test.rules
 pattern_range="5:40"
+match=0
 
 function show_help {
 echo "
@@ -13,6 +14,7 @@ Usage: ./generate_rules.sh [options]
     -h                              show help
     -v                              verbose
     -R                              random rule ip, any if unset. default unset
+    -m                              add a rule to match the flow, default unset
     -n <rule_number>                set rule number, default $rule_count
     -o <output_filename>            set output file, default $out_file
     -r <min_length:max_length>      set pattern length range, default $pattern_range
@@ -29,7 +31,7 @@ cd "$(dirname $0)"
 # Argument parsing
 OPTIND=1
 
-while getopts "h?vRn:o:r:" opt; do
+while getopts "h?vRmn:o:r:" opt; do
     case "$opt" in
         h|\?)
             show_help
@@ -38,6 +40,8 @@ while getopts "h?vRn:o:r:" opt; do
         v)  verbose=1
             ;;
         R)  random_ip_port=1
+            ;;
+        m)  match=1
             ;;
         n)  rule_count=$OPTARG
             ;;
@@ -99,4 +103,10 @@ do
 
     let "rule_i += 1"
 done
+
+if [[ $match == 1 ]] ; then
+    sid=$((100000000+$rule_i))
+    echo "alert tcp any any -> any any ( msg:\"cdef\"; content:\"cdef\"; sid:$sid; )" >> $out_file
+fi
+
 if [[ $verbose == 1 ]] ; then echo "$rule_count rules are generated to file $out_file." ; fi
