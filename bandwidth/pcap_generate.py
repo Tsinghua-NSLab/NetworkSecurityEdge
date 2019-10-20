@@ -3,6 +3,7 @@
 import random
 import string
 from scapy.all import *
+import argparse
 
 
 def random_string(minLength, maxLength):
@@ -103,10 +104,23 @@ class FlowGenerater():
                 self.pkts += [dup_pkt]
 
 
+parser = argparse.ArgumentParser(description='Generate random flow.')
+parser.add_argument('-n', dest='pnum', default=10,
+                    help='packet number', type=int)
+parser.add_argument('--minLength', dest='minLength',
+                    default=10, help='minimal data length', type=int)
+parser.add_argument('--maxLength', dest='maxLength',
+                    default=1001, help='maximum data length', type=int)
+parser.add_argument('-t', dest='time', default=10,
+                    help='flow time period', type=float)
+parser.add_argument('-o', dest='outfile', default='pcap/temp.pcapng',
+                    help='output file path', type=str)
+args = parser.parse_args()
+
 fg = FlowGenerater()
 fg.handshake_pkts()
-fg.generate_random_pkts(num=10, minLength=50, maxLength=500, time=5)
+fg.generate_random_pkts(num=args.pnum, minLength=args.minLength, maxLength=args.maxLength, time=args.time)
 fg.finish_pkts()
 
 # Save to file
-wrpcap("temp.cap", fg.pkts)
+wrpcap(args.outfile, fg.pkts)
