@@ -14,12 +14,14 @@ Find the relationship between snort bandwidth and flow/rule number.
     - [x] snort listen to interface
     - [x] test flows using different rules
 
+- [x] use python to generate random flow
+    - [x] change payload
+
 - shell script
     - [x] generate random rules
         - [x] random src and dst ip, random port
         - [ ] add rules that matches the flow content
     - [x] generate random flows
-        - [ ] change payload
     - [ ] tcpreplay to snort
     - [ ] record result
         - [ ] exclude unrelated packets?
