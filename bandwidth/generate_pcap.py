@@ -5,7 +5,6 @@ import string
 from scapy.all import *
 import argparse
 
-
 def random_string(minLength, maxLength):
     stringLength = random.randint(minLength, maxLength)
     letters = string.ascii_letters
@@ -31,8 +30,8 @@ class FlowGenerater():
         self.pkts = []
 
         # ip packets
-        self.IP_C = IP(src=self.add_c, dst=self.add_s)
-        self.IP_S = IP(src=self.add_s, dst=self.add_c)
+        self.IP_C = Ether()/IP(src=self.add_c, dst=self.add_s)
+        self.IP_S = Ether()/IP(src=self.add_s, dst=self.add_c)
 
     def seq_c_acc(self, num=1):
         self.seq_c += num
@@ -89,7 +88,9 @@ class FlowGenerater():
         self.seq_s_acc(len(data))
         return pkt
 
-    def generate_random_pkts(self, num=10, minLength=10, maxLength=1001, time=10):
+    def generate_random_pkts(self, num, minLength, maxLength, time):
+        if maxLength == 0:
+            maxLength = minLength + 1
         time_base = fg.pkts[-1].time
         time_seq = generate_time_seq(num, time)
         for i in range(num):
@@ -108,9 +109,10 @@ parser = argparse.ArgumentParser(description='Generate random flow.')
 parser.add_argument('-n', dest='pnum', default=10,
                     help='packet number', type=int)
 parser.add_argument('--minLength', dest='minLength',
-                    default=10, help='minimal data length', type=int)
+                    default=100, help='minimal data length', type=int)
 parser.add_argument('--maxLength', dest='maxLength',
-                    default=1001, help='maximum data length', type=int)
+                    default=0, help='maximum data length,\
+                    0 means exactly as minLength', type=int)
 parser.add_argument('-t', dest='time', default=10,
                     help='flow time period', type=float)
 parser.add_argument('-o', dest='outfile', default='pcap/temp.pcapng',
@@ -119,8 +121,10 @@ args = parser.parse_args()
 
 fg = FlowGenerater()
 fg.handshake_pkts()
-fg.generate_random_pkts(num=args.pnum, minLength=args.minLength, maxLength=args.maxLength, time=args.time)
+fg.generate_random_pkts(num=args.pnum, minLength=args.minLength,
+                        maxLength=args.maxLength, time=args.time)
 fg.finish_pkts()
 
 # Save to file
-wrpcap(args.outfile, fg.pkts)
+for pkt in fg.pkts:
+    wrpcap(args.outfile, pkt)
