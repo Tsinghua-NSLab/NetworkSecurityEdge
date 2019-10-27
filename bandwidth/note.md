@@ -31,7 +31,15 @@ Find the relationship between snort bandwidth and flow/rule number.
         - [x] snort read file
     - [x] record result
         - [ ] exclude unrelated packets?
-    - [ ] auto-experiment and log errors
+    - [x] auto-experiment and log
+
+- test result
+    - [ ] see if the community rules care about flow or not
+
+## Test Result
+A quick test and result see data/result.log.temp.
+The bandwidth has nothingto do with the flow number.
+Maybe the rules don't care about whether a packet belongs to a flow.
 
 ## Tools
 - Tcpreplay
