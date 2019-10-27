@@ -1,45 +1,46 @@
 #! /bin/bash
 
-pcap_num=10
-flow_num=100
-packet_num=20
-payload_size=100
-flow_period=10
+flow_num=10
+
+packet_num=5
+flow_mult=100
+payload_size=50
+flow_period=100
 max_shift=100
 
-rm pcap/*temp -f
-
-i=1
-while [ "$i" -le $pcap_num ]
+echo "start" >> result.log
+date >> result.log
+while [ "$flow_num" -le 1000 ]
 do
-    ./generate_pcap.py -n $packet_num --minLength $payload_size -o pcap/$i.pcapng.temp -t $flow_period
-    ./generate_flows.sh -n $flow_num -i pcap/$i.pcapng.temp -o pcap/$i.pcapng.temp -s $max_shift
-    let "i += 1"
+    rm pcap/* -f
+
+    echo "generating pcap file"
+    i=1
+    while [ "$i" -le $flow_num ]
+    do
+        ./generate_pcap.py -n $packet_num --minLength $payload_size -o pcap/$i.pcapng.temp -t $flow_period
+        ./generate_flows.sh -n $flow_mult -i pcap/$i.pcapng.temp -o pcap/$i.pcapng.temp -s $max_shift 2> /dev/null 
+        let "i += 1"
+    done
+    mergecap -w pcap/out.pcapng pcap/*.temp
+
+    # snort
+    echo "running snort"
+    echo $flow_num >> result.log
+    sudo docker rm snort 2> /dev/null
+    sudo docker run -i --name snort \
+        -v `pwd`/snort.lua:/usr/local/etc/snort/snort.lua \
+        -v `pwd`/pcap/out.pcapng:/home/pcap \
+        snort \
+        snort -c /usr/local/etc/snort/snort.lua \
+        -A fast \
+        -r /home/pcap \
+        2> /dev/null \
+        | tail -n 4 | head -n 2 >> result.log
+    echo >> result.log
+
+    let "flow_num += 10"
 done
-mergecap -w pcap/out.pcapng pcap/*
-rm pcap/*temp
 
-# snort
-
-#sudo docker kill snort
-#sudo docker rm snort
-
-#sudo docker run -d --name snort --net=host \
-    #--cap-add=NET_ADMIN \
-    #-v `pwd`/log/:/var/log/snort/ \
-    #-v `pwd`/test.rules:/usr/local/etc/snort/rules/rules/test.rules \
-    #-v `pwd`/snort.lua:/usr/local/etc/snort/snort.lua \
-    #snort \
-    #snort -c /usr/local/etc/snort/snort.lua \
-    #-A fast \
-    #-l /var/log/snort \
-    #-i wlp0s20u7
-
-#sudo tcpreplay -i wlp0s20u7 pcap/out.pcapng 
-
-#sudo docker kill -s=SIGINT snort
-
-##echo "$1 flows $2 rules" >> log/out.log
-#alerts=$(sudo docker logs snort | grep total_alerts | sed 's/.* \(\d*\)/\1/g')
-#echo $alerts
-##echo >> log/out.log
+echo "done!" >> result.log
+date >> result.log

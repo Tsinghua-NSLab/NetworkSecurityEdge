@@ -23,13 +23,15 @@ Find the relationship between snort bandwidth and flow/rule number.
     - [x] generate random rules
         - [x] random src and dst ip, random port
         - [ ] add rules that matches the flow content
-    - [ ] generate random flows
-        - [ ] change time, packet number and flow number, combine them to get an input file
-        - [ ]
-    - [ ] tcpreplay to snort or snort read file
-    - [ ] record result
+        - [ ] rules applying to tcp flow instead of just one single packet
+    - [x] generate random flows
+        - [x] change time, packet number and flow number, combine them to get an input file
+    - snort
+        - [ ] tcpreplay to snort
+        - [x] snort read file
+    - [x] record result
         - [ ] exclude unrelated packets?
-    - [ ] auto-experiment and log error
+    - [ ] auto-experiment and log errors
 
 ## Tools
 - Tcpreplay

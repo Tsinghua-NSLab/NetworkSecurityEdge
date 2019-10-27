@@ -201,7 +201,7 @@ ips =
 
     rules = [[
 
-        include $RULE_PATH/test.rules
+        include $RULE_PATH/snort3-community.rules
 
     ]]
 }

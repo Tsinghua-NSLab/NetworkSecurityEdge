@@ -16,6 +16,7 @@ def generate_time_seq(num, time):
     for i in range(num):
         sequence += [random.uniform(0, time)]
     sequence.sort()
+    sequence[-1] = time
     return sequence
 
 
@@ -126,5 +127,4 @@ fg.generate_random_pkts(num=args.pnum, minLength=args.minLength,
 fg.finish_pkts()
 
 # Save to file
-for pkt in fg.pkts:
-    wrpcap(args.outfile, pkt)
+wrpcap(args.outfile, fg.pkts)
