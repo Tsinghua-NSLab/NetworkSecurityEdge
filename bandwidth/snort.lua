@@ -199,9 +199,10 @@ ips =
     -- The following include syntax is only valid for BUILD_243 (13-FEB-2018) and later
     -- RULE_PATH is typically set in snort_defaults.lua
 
+        --include $RULE_PATH/snort3-community.rules
     rules = [[
 
-        include $RULE_PATH/snort3-community.rules
+        include $RULE_PATH/test.rules
 
     ]]
 }

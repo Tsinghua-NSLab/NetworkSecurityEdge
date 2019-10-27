@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 x = []
 y = []
 z = []
-with open("result.log.temp", "r") as f:
-    for i in range(243):
+with open("out", "r") as f:
+    for i in range(12):
         flow_num = int(f.readline())
         seconds = float(f.readline())
         packets = int(f.readline())

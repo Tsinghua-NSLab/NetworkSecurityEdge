@@ -99,7 +99,7 @@ do
         src=$(get_random_ip) ; dst=$(get_random_ip) ; src_p=$RANDOM ; dst_p=$RANDOM
     fi
 
-    echo "alert tcp $src $src_p -> $dst $dst_p ( msg:\"$pattern\"; content:\"$pattern\"; sid:$sid; )" >> $out_file
+    echo "alert tcp $src $src_p -> $dst $dst_p ( msg:\"$pattern\"; flow:established; content:\"$pattern\"; sid:$sid; )" >> $out_file
 
     let "rule_i += 1"
 done
