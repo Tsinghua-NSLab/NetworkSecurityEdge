@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
+import time
 import random
 import string
 from scapy.all import *
 import argparse
+
 
 def random_string(minLength, maxLength):
     stringLength = random.randint(minLength, maxLength)
@@ -20,12 +22,22 @@ def generate_time_seq(num, time):
     return sequence
 
 
+def random_ip():
+    return ".".join([str(random.randint(0, 255)) for i in range(4)])
+
+
+def random_port():
+    return random.randint(0, 65535)
+
+
 class FlowGenerater():
-    def __init__(self):
-        self.add_c = "1.1.1.1"
-        self.add_s = "2.2.2.2"
-        self.port_c = 10000
-        self.port_s = 20000
+    def __init__(self, start_time=time.time(), add_c=random_ip(),
+                 add_s=random_ip()):
+        self.start_time = start_time
+        self.add_c = add_c
+        self.add_s = add_s
+        self.port_c = random_port()
+        self.port_s = random_port()
         self.seq_c = random.randrange(2**32)
         self.seq_s = random.randrange(2**32)
         self.pkts = []
@@ -45,6 +57,7 @@ class FlowGenerater():
     def handshake_pkts(self):
         SYN = self.IP_C/TCP(sport=self.port_c, dport=self.port_s,
                             flags='S', seq=self.seq_c)
+        SYN.time = self.start_time
         self.seq_c_acc()
 
         SYNACK = self.IP_S/TCP(sport=self.port_s, dport=self.port_c,
@@ -107,24 +120,33 @@ class FlowGenerater():
 
 
 parser = argparse.ArgumentParser(description='Generate random flow.')
-parser.add_argument('-n', dest='pnum', default=10,
+parser.add_argument('-f', dest='fnum', default=10,
+                    help='flow number', type=int)
+parser.add_argument('-p', dest='pnum', default=2,
                     help='packet number', type=int)
 parser.add_argument('--minLength', dest='minLength',
                     default=100, help='minimal data length', type=int)
 parser.add_argument('--maxLength', dest='maxLength',
                     default=0, help='maximum data length,\
                     0 means exactly as minLength', type=int)
-parser.add_argument('-t', dest='time', default=10,
+parser.add_argument('-t', dest='time', default=100,
                     help='flow time period', type=float)
 parser.add_argument('-o', dest='outfile', default='pcap/temp.pcapng',
                     help='output file path', type=str)
 args = parser.parse_args()
 
-fg = FlowGenerater()
-fg.handshake_pkts()
-fg.generate_random_pkts(num=args.pnum, minLength=args.minLength,
-                        maxLength=args.maxLength, time=args.time)
-fg.finish_pkts()
+all_p = []
+start_time = time.time()
+for i in range(args.fnum):
+    fg = FlowGenerater(start_time=start_time+random.uniform(0, args.time))
+    fg.handshake_pkts()
+    fg.generate_random_pkts(num=args.pnum, minLength=args.minLength,
+                            maxLength=args.maxLength, time=args.time)
+    fg.finish_pkts()
+
+    all_p += fg.pkts
+
+all_p.sort(key=lambda pkt: pkt.time)
 
 # Save to file
-wrpcap(args.outfile, fg.pkts)
+wrpcap(args.outfile, all_p)

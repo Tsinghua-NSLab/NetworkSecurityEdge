@@ -81,13 +81,8 @@ while [ "$flow_i" -le $flow_count ]
 do
     file_name=test$flow_i.pcapng
 
-    # Random port
-    PORT_S=$((RANDOM+1024))
-    PORT_O=$((RANDOM+1024))
-    tcprewrite -i $in_file -o $temp_dir/$file_name -r 10000:$PORT_S,20000:$PORT_O
-
     # Random IP
-    tcprewrite -i $temp_dir/$file_name -o $temp_dir/$file_name -s $RANDOM
+    tcprewrite -i $in_file -o $temp_dir/$file_name -s $RANDOM
 
     # Shift timestamp
     shift_t=$(echo "scale=8;($RANDOM+$RANDOM*32768)/(32767*32767)*$max_shift"  | bc)

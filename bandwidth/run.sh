@@ -2,7 +2,7 @@
 
 flow_num_unit=10
 
-packet_num=20
+packet_num=100
 flow_mult=1000
 payload_size=1000
 flow_period=100
@@ -10,25 +10,32 @@ max_shift=100
 
 echo "start" >> result.log
 date >> result.log
+echo "multiply: "$flow_mult >> result.log
 
 rm pcap/* -rf
-i=1
 flow_num=$flow_num_unit
-while [ "$flow_num" -le 100000 ]
+while [ "$flow_num" -le 10000 ]
 do
-    iteration_start=`date +'%s.%N'`
 
     echo "generating pcap file"
-    while [ "$i" -le $flow_num ]
-    do
-        ./generate_pcap.py -n $packet_num --minLength $payload_size -o pcap/$i.pcapng.temp -t $flow_period
-        ./generate_flows.sh -n $flow_mult -i pcap/$i.pcapng.temp -o pcap/$i.pcapng.temp -s $max_shift 2> /dev/null 
-        let "i += 1"
-    done
+    tic=`date +'%s.%N'`
+    ./generate_pcap.py -f $flow_num_unit -p $packet_num --minLength $payload_size -o pcap/new.pcapng.temp -t $flow_period
+    toc=`date +'%s.%N'`
+    echo "time: "`echo "sclae=4; $toc - $tic" | bc -l`
 
+    echo "multiplying"
+    tic=`date +'%s.%N'`
+    ./generate_flows.sh -n $flow_mult -i pcap/new.pcapng.temp -o pcap/new.pcapng.temp -s $max_shift 2> /dev/null 
+    toc=`date +'%s.%N'`
+    echo "time: "`echo "sclae=4; $toc - $tic" | bc -l`
+
+    echo "merging"
+    tic=`date +'%s.%N'`
     rm pcap/out.pcapng -rf
     mergecap -w pcap/out.pcapng pcap/*temp
     rm pcap/*temp -rf
+    toc=`date +'%s.%N'`
+    echo "time: "`echo "sclae=4; $toc - $tic" | bc -l`
 
     # snort
     echo "running snort"
@@ -45,6 +52,8 @@ do
         &> /dev/null &2>1
     endtime=`date +'%s.%N'`
     period=`echo "sclae=4; $endtime - $starttime" | bc -l`
+    echo "time: "$period
+    echo
 
     echo $flow_num >> result.log
     echo $period >> result.log
@@ -54,9 +63,7 @@ do
     mv pcap/out.pcapng pcap/last.pcapng.temp
 
     let "flow_num += $flow_num_unit"
-    iteration_end=`date +'%s.%N'`
-    echo "iteration time: "`echo "sclae=4; $iteration_end - $iteration_start" | bc -l`
-    echo
+    exit 0
 done
 
 echo "done!" >> result.log
