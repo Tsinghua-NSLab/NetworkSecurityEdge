@@ -1,9 +1,9 @@
 #! /bin/bash
 
-flow_num_unit=10
+flow_num_unit=300
 
 packet_num=100
-flow_mult=1000
+flow_mult=10000
 payload_size=1000
 flow_period=100
 max_shift=100
@@ -14,7 +14,7 @@ echo "multiply: "$flow_mult >> result.log
 
 rm pcap/* -rf
 flow_num=$flow_num_unit
-while [ "$flow_num" -le 10000 ]
+while [ "$flow_num" -le 1000000 ]
 do
 
     echo "generating pcap file"
@@ -63,7 +63,6 @@ do
     mv pcap/out.pcapng pcap/last.pcapng.temp
 
     let "flow_num += $flow_num_unit"
-    exit 0
 done
 
 echo "done!" >> result.log
