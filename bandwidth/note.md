@@ -41,6 +41,11 @@ A quick test and result see data/result.log.temp.
 The bandwidth has nothingto do with the flow number.
 Maybe the rules don't care about whether a packet belongs to a flow.
 
+- result.log1
+    - 20 packets per flow
+    - multiply 1000
+    - not enough packets
+
 ## Tools
 - Tcpreplay
 - Wireshark

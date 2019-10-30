@@ -3,7 +3,7 @@
 flow_count=100
 verbose=0
 in_file=./pcap/sample.pcapng
-out_file=./pcap/out.pcapng
+out_file=./pcap/outfile.pcapng
 max_shift=30
 
 function show_help {
