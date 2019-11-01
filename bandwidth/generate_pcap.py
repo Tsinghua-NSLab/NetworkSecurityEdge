@@ -44,12 +44,11 @@ def random_dup_pkt(pkt, add_c, add1, add2, p1, p2):
 
 
 class FlowGenerater():
-    def __init__(self, period, start_time=time.time(), add_c=random_ip(),
-                 add_s=random_ip()):
+    def __init__(self, period, start_time=time.time()):
         self.period = period
         self.start_time = start_time
-        self.add_c = add_c
-        self.add_s = add_s
+        self.add_c = random_ip()
+        self.add_s = random_ip()
         self.port_c = random_port()
         self.port_s = random_port()
         self.seq_c = random.randrange(2**32)
@@ -82,7 +81,6 @@ class FlowGenerater():
         ACK = self.IP_C/TCP(sport=self.port_c, dport=self.port_s,
                             flags='A', seq=self.seq_c, ack=self.seq_s)
         ACK.time = SYNACK.time + random.uniform(0.0001, 0.0002)
-        self.seq_c_acc()
 
         self.pkts += [SYN, SYNACK, ACK]
 
@@ -170,7 +168,7 @@ parser.add_argument('-o', dest='outfile', default='pcap/temp.pcapng',
                     help='output file path', type=str)
 parser.add_argument('-r', dest='retransmition', help='random retransmition',
                     action="store_true")
-parser.add_argument('-d', dest='duplicate', default=2,
+parser.add_argument('-d', dest='duplicate', default=1,
                     help='duplicate flow', type=int)
 args = parser.parse_args()
 

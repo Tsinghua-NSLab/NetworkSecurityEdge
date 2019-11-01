@@ -86,11 +86,11 @@ do
 
     # Shift timestamp
     shift_t=$(echo "scale=8;($RANDOM+$RANDOM*32768)/(32767*32767)*$max_shift"  | bc)
-    editcap -t $shift_t $temp_dir/$file_name $temp_dir/$file_name
+    editcap -t $shift_t $temp_dir/$file_name $temp_dir/out$file_name
 
     if [[ $verbose == 1 ]] ; then echo $shift_t ; fi
     let "flow_i += 1"
 done
 
-mergecap -w $out_file $temp_dir/*
+mergecap -w $out_file $temp_dir/out*
 if [[ $verbose == 1 ]] ; then echo "$flow_count flows are generated to file $out_file." ; fi

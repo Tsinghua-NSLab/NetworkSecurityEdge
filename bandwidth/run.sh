@@ -1,20 +1,24 @@
 #! /bin/bash
 
-flow_num_unit=300
-
-packet_num=100
-flow_mult=10000
+flow_num_unit=10
+packet_num=20
+flow_mult=100
 payload_size=1000
-flow_period=100
-max_shift=100
 
-echo "start" >> result.log
-date >> result.log
-echo "multiply: "$flow_mult >> result.log
+flow_period=100
+log_file=result.log
+
+echo "start" >> $log_file
+date >> $log_file
+echo "flow_mult: "$flow_mult >> $log_file
+echo "packet_num: "$packet_num >> $log_file
+echo "payload_size: "$payload_size >> $log_file
+echo >> $log_file
 
 rm pcap/* -rf
+sudo docker rm snort 2> /dev/null
 flow_num=$flow_num_unit
-while [ "$flow_num" -le 1000000 ]
+while [ "$flow_num" -le 10000 ]
 do
 
     echo "generating pcap file"
@@ -25,7 +29,7 @@ do
 
     echo "multiplying"
     tic=`date +'%s.%N'`
-    ./generate_flows.sh -n $flow_mult -i pcap/new.pcapng.temp -o pcap/new.pcapng.temp -s $max_shift 2> /dev/null 
+    ./generate_flows.sh -n $flow_mult -i pcap/new.pcapng.temp -o pcap/new.pcapng.temp -s $flow_period 2> /dev/null 
     toc=`date +'%s.%N'`
     echo "time: "`echo "sclae=4; $toc - $tic" | bc -l`
 
@@ -49,21 +53,22 @@ do
         snort -c /usr/local/etc/snort/snort.lua \
         -A fast \
         -r /home/pcap \
-        &> /dev/null &2>1
+        > /dev/null 2>&1
     endtime=`date +'%s.%N'`
     period=`echo "sclae=4; $endtime - $starttime" | bc -l`
     echo "time: "$period
-    echo
 
-    echo $flow_num >> result.log
-    echo $period >> result.log
-    echo >> result.log
+    echo $flow_num >> $log_file
+    echo $period >> $log_file
+    echo >> $log_file
 
     sudo docker rm snort 2> /dev/null
     mv pcap/out.pcapng pcap/last.pcapng.temp
 
     let "flow_num += $flow_num_unit"
+    ls -alh pcap | grep last.pcapng.temp
+    echo
 done
 
-echo "done!" >> result.log
-date >> result.log
+echo "done!" >> $log_file
+date >> $log_file
