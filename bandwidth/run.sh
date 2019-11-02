@@ -6,9 +6,8 @@ flow_mult=100
 payload_size=1000
 
 flow_period=100
-log_file=result.log
+log_file=flows.log
 
-echo "start" >> $log_file
 date >> $log_file
 echo "flow_mult: "$flow_mult >> $log_file
 echo "packet_num: "$packet_num >> $log_file
