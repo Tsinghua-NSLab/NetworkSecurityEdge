@@ -18,12 +18,15 @@ with open(filename, "r") as f:
             else:
                 continue
         else:
-            if (num - first_line) % 3 == 0:
-                flow_num = int(line)
-                x += [flow_num]
-            elif (num - first_line) % 3 == 1:
-                seconds = float(line)
-                y += [seconds]
+            try:
+                if (num - first_line) % 3 == 0:
+                    flow_num = int(line)
+                    x += [flow_num]
+                elif (num - first_line) % 3 == 1:
+                    seconds = float(line)
+                    y += [seconds]
+            except:
+                break
 
 plt.scatter(x, y, s=3)
 plt.show()

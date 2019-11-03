@@ -1,6 +1,7 @@
 #! /bin/bash
 
 verbose=0
+ddos=0
 random_ip_port=0
 rule_count=10
 out_file=./test.rules
@@ -12,6 +13,7 @@ Usage: ./generate_rules.sh [options]
 
     -h                              show help
     -v                              verbose
+    -d                              ddos rules
     -R                              random rule ip, any if unset. default unset
     -n <rule_number>                set rule number, default $rule_count
     -o <output_filename>            set output file, default $out_file
@@ -29,13 +31,15 @@ cd "$(dirname $0)"
 # Argument parsing
 OPTIND=1
 
-while getopts "h?vRmn:o:r:" opt; do
+while getopts "h?vdRmn:o:r:" opt; do
     case "$opt" in
         h|\?)
             show_help
             exit 0
             ;;
         v)  verbose=1
+            ;;
+        d)  ddos=1
             ;;
         R)  random_ip_port=1
             ;;
@@ -100,4 +104,10 @@ do
     let "rule_i += 1"
 done
 
+if [[ $ddos == 1 ]] ; then
+    echo "alert tcp $src $src_p -> $dst $dst_p ( msg:\"ddos\"; detection_filter: track by_dst, count 100, seconds 50; flow:stateless; sid:$sid; )" > $out_file
+fi
+
+
 if [[ $verbose == 1 ]] ; then echo "$rule_count rules are generated to file $out_file." ; fi
+

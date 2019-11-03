@@ -35,8 +35,8 @@ Find the relationship between snort bandwidth and flow/rule number.
 
 - test
     - [x] change flow number, run test
-        - [ ] use rule that won't match all
-    - [ ] change rule number, run test
+        - [x] use rule that won't match all
+    - [x] change rule number, run test
     - [ ] use community rules, change flow number
 
 ## Test Result
