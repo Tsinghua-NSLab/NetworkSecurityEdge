@@ -6,7 +6,13 @@ flow_mult=100
 payload_size=1000
 
 flow_period=100
-log_file=$1
+
+log_file="/dev/null"
+if [ ! -z "$1" ]; then
+    log_file=$1 
+fi
+
+echo "Log to $log_file."
 
 date >> $log_file
 echo "flow_mult: "$flow_mult >> $log_file
@@ -17,7 +23,7 @@ echo >> $log_file
 rm pcap/* -rf
 sudo docker rm snort 2> /dev/null
 flow_num=$flow_num_unit
-while [ "$flow_num" -le 1000 ]
+while [ "$flow_num" -le 2000 ]
 do
 
     echo "generating pcap file"

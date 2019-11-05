@@ -1,1 +1,1 @@
-alert tcp any any -> any any ( msg:"ddos"; detection_filter: track by_dst, count 100, seconds 50; flow:stateless; sid:100000010; )
+alert tcp any any -> any any ( msg:ddos; detection_filter: track by_dst, count 40, seconds 100; flow:stateless; sid:100000010; )

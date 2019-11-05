@@ -37,11 +37,12 @@ Find the relationship between snort bandwidth and flow/rule number.
     - [x] change flow number, run test
         - [x] use rule that won't match all
     - [x] change rule number, run test
+    - [ ] change ddos threshold, run test
     - [ ] use community rules, change flow number
 
 ## Test Result
 A quick test and result see data/result.log.temp.
-The bandwidth has nothingto do with the flow number.
+The bandwidth has nothing to do with the flow number.
 Maybe the rules don't care about whether a packet belongs to a flow.
 
 ## Tools
@@ -70,7 +71,7 @@ Maybe the rules don't care about whether a packet belongs to a flow.
 #### Random IP
 `tcprewrite -i pcap/sample.pcapng -o pcap/sample_random.pcapng -s 234`
 
-#### Shift timestamp
+#### Shift timestamps
 `editcap -t 0.00001 pcap/sample.pcapng pcap/sample_shifted.pcapng`
 
 #### Merge pcappng files
