@@ -1,8 +1,10 @@
 #!/bin/bash
 
-for i in 10 20 30 40 
+for i in 0 10 10000
 do
-    echo "alert tcp any any -> any any ( msg:"ddos"; detection_filter: track by_dst, count $i, seconds 100; flow:stateless; sid:100000010; )" > test.rules
-    echo "threshhold: $i" > flows_ddos_$i.log
-    ./flows.sh flows_ddos_$i.log
+    ./generate_rules.sh -r 40:41 -n $i
+    echo "alert tcp any any -> any any ( msg:"ddos"; detection_filter: track by_dst, count 5, seconds 100; flow:stateless; sid:200000000; )" >> test.rules
+    echo "threshhold: 5" > flows_d5_n$i.log
+    echo "string rule: $i" >> flows_d5_n$i.log
+    ./flows.sh flows_d5_n$i.log
 done

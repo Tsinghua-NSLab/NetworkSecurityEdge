@@ -22,8 +22,8 @@ Find the relationship between snort bandwidth and flow/rule number.
 - shell script
     - [x] generate random rules
         - [x] random src and dst ip, random port
-        - [ ] add rules that matches the flow content
         - [ ] rules applying to tcp flow instead of just one single packet
+        - [ ] regex rules (generate from snort rules?)
     - [x] generate random flows
         - [x] change time, packet number and flow number, combine them to get an input file
     - snort
@@ -34,16 +34,21 @@ Find the relationship between snort bandwidth and flow/rule number.
     - [x] auto-experiment and log
 
 - test
-    - [x] change flow number, run test
+    - [x] change flow number
         - [x] use rule that won't match all
-    - [x] change rule number, run test
-    - [ ] change ddos threshold, run test
-    - [ ] use community rules, change flow number
+    - [x] change rule number
+    - [x] change ddos threshold
+    - [ ] mix ddos rule and regex rules
+    - [ ] state rules
 
 ## Test Result
-A quick test and result see data/result.log.temp.
-The bandwidth has nothing to do with the flow number.
-Maybe the rules don't care about whether a packet belongs to a flow.
+See `result/`.
+
+- `flows.log`: Using string rules, matching any to any. Change flow number.
+- `flows_nomatch.log`: Using string rules, but matching a specific ip. Change flow number.
+- `flows_ddos_[d].log`: Using ddos rule, matching any to any. Change flow number. Number d stands for ddos threshold.
+- `flows_d[d]_n[n].log`: Using ddos rule and string rules. Change flow number. Number d stands for ddos threshold. Number n stands for string rule number.
+- `rules.log`: Using string rules. Change rule number.
 
 ## Tools
 - Tcpreplay

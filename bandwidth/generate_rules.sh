@@ -5,7 +5,7 @@ ddos=0
 random_ip_port=0
 rule_count=10
 out_file=./test.rules
-pattern_range="5:40"
+pattern_range="40:41"
 
 function show_help {
 echo "
