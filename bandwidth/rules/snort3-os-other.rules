@@ -1,0 +1,2 @@
+/^\s*?MAIL\s+?FROM\x3a[^\r\n]*?\x28\x29\s\x7b/i
+/^\s*?RCPT\s+?TO\x3a[^\r\n]*?\x28\x29\s\x7b/i

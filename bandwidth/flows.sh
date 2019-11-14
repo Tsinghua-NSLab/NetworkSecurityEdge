@@ -1,6 +1,6 @@
 #! /bin/bash
 
-flow_num_unit=10
+flow_num_unit=100
 packet_num=20
 flow_mult=100
 payload_size=1000
@@ -23,7 +23,7 @@ echo >> $log_file
 rm pcap/* -rf
 sudo docker rm snort 2> /dev/null
 flow_num=$flow_num_unit
-while [ "$flow_num" -le 2000 ]
+while [ "$flow_num" -le 1000 ]
 do
 
     echo "generating pcap file"
@@ -71,7 +71,6 @@ do
     mv pcap/out.pcapng pcap/last.pcapng.temp
 
     let "flow_num += $flow_num_unit"
-    ls -alh pcap | grep last.pcapng.temp
     echo
 done
 

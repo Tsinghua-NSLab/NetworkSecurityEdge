@@ -1,0 +1,2 @@
+/nim:import\?[^\x22\x27>\s]*?filename=[^\x22\x27>\s]{485}/i
+/nim:import\?[^\x22\x27>\s]*?filename=[^\x22\x27>\s]{485}/i

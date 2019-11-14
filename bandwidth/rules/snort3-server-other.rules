@@ -1,0 +1,27 @@
+/\x02[^\x0a]+\x3a[^\x0a]+\x0a/
+/^[^\x00][^\x00\x01]+$/
+/nsrjb[^\x00]*?([\x3b\x7c\x26\x60]|\x24\x28)/
+/mminfo[^\x00]*?([\x3b\x7c\x26\x60]|\x24\x28)/
+/mmlocate[^\x00]*?([\x3b\x7c\x26\x60]|\x24\x28)/
+/mmpool[^\x00]*?([\x3b\x7c\x26\x60]|\x24\x28)/
+/nsrmm[^\x00]*?([\x3b\x7c\x26\x60]|\x24\x28)/
+/SOAPAction\x3A\s*?\x22[^\x22\x23]+?\x23([^\x22]{2048}|[^\x22]+$)/si
+/skillName\x3D\x7B\x28\x23/i
+/filename\s*?=\s*?[\x22\x27][^\x22\x27]*?(\x2e\x2e|%2e%2e)([\x5c\x2f]|%5c|%2f)/i
+/filename\s*?=\s*?[\x22\x27][^\x22\x27]*?(\x2e\x2e|%2e%2e)([\x5c\x2f]|%5c|%2f)/i
+/\/docushare\/dsweb\/ResultBackgroundJobMultiple\/\d*[^\d]/
+/filename=[^&]*?(\x2e|%2e){2}([\x2f\x5c]|%2f|%5c)/i
+/filename\s*?=\s*?[\x22\x27]?[^\r\n]*?(\x2e|%2e){2}([\x2f\x5c]|%2f|%5c)/i
+/^router=.*?arg=[a-z\d\.]*[^a-z\d\.&]/i
+/bbdd(host|user|passwd)=\x22[^\s]*?([\x60\x3b\x7c]|\x24\x28)/i
+/\x00hide hide[\x22\x09]+([a-z0-9\x5c\x2e\x3a]+\x2eexe|sh)/
+/\x00{7}\x53\x00{3}\x16.{8}[^\x00]*?[\x22\x27\x29\x3b]/
+/\x00{7}\x55\x00{3}\x21.{4}[^\x00]*?[\x22\x27\x29\x3b]/
+/task=[^\x26]*\.\./i
+/^.{2}\x01\x00.{8}[^\x00]{230}/
+/session_id=\x22[^\x22]{0,1000}([\x60\x3b\x7c]|\x24\x28|%60|%3b|%7c|%26|%24%28)/sm
+/request\s*?[\x22\x27]\s*?\x3a\s*?[\x27\x22]\s*?discovery\s*?data[\x27\x22][^}]*?[\x27\x22]\s*?ip\s*?[\x27\x22]\s*?\x3a\s*?[\x27\x22][^\x27\x22]*?([\x60\x3b\x7c\x26]|\x24\x28)/i
+/Authorization:\s+Digest\s+(username|realm|nonce|uri|response|algorithm|cnonce|opaque|qop|nc)\s*\x0d\x0a/
+/^.{12}[^\x00\x40\xff]{20}$/
+/BDAT[\x20\x09]+?[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\xff]/i
+/load\x5B\x5D=([^&]*?,){50}/i

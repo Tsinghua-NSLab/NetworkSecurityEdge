@@ -1,0 +1,10 @@
+/(update|exec|insert|union)[^\/\\]*\/\*.*\*\//is
+/uuid_from_char\s*?\(\s*?[\x22\x27][^\x22\x27]{37}/smi
+/exec_sdbinfo\s+[\x26\x3b\x7c\x3e\x3c]/i
+/select\s+xmlquery\s*\x28\s*(\x27|\x22)[^\x27\x22]{512}/smi
+/(SELECT|UPDATE|INSERT)\x20+[^\r\n\x26]+--$/i
+/(and|or)[\s\x2f\x2A]+1=1/i
+/(and|or)[\s\x2F\x2A]+1=0/i
+/or[\s\x2f\x2A]+1=1/i
+/or\++1%3D1/i
+/User-Agent\x3A\x20[^\r\n]*sleep\x28/i

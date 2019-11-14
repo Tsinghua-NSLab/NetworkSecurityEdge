@@ -1,0 +1,18 @@
+/\x2fF(?i)\s*?\(\s*?http\x3a\x2f\x2f(?P<domain>[^\x2f]+)\x2f[^\x29]*?\x2epdf[^>]*?submitForm\s*?\(\s*?[\x22\x27]?\s*?http\x3a\x2f\x2f(?!(?P=domain))[^\x29]*?\x2efdf\x23FDF/
+/\x2fF(?i)\s*?\(\s*?http\x3a\x2f\x2f(?P<domain>[^\x2f]+)\x2f[^\x29]*?\x2epdf[^>]*?submitForm\s*?\(\s*?[\x22\x27]?\s*?http\x3a\x2f\x2f(?!(?P=domain))[^\x29]*?\x2efdf\x23FDF/
+/encoding\x3D[\x22\x27][^\x22\x27]{1024}/
+/version\x3D[\x22\x27][^\x22\x27]{1024}/
+/encoding\x3D[\x22\x27][^\x22\x27]{1024}/
+/version\x3D[\x22\x27][^\x22\x27]{1024}/
+/xsl\x3Atemplate[^\x3E]*priority\s*\x3D[\s\x22\x27]*[\d\x2D]*[^\s\x22\x27\d\x2d]/smi
+/xsl\x3Atemplate[^\x3E]*priority\s*\x3D[\s\x22\x27]*[\d\x2D]*[^\s\x22\x27\d\x2d]/smi
+/start=[\x22\x27](?P<start>[A-Za-z0-9]+)[\x22\x27][^>]+duration=[\x22\x27](?P=start)[\x22\x27]/smi
+/start=[\x22\x27](?P<start>[A-Za-z0-9]+)[\x22\x27][^>]+duration=[\x22\x27](?P=start)[\x22\x27]/smi
+/<application\s[^>]*?(run|url)\s*=\s*[\x22\x27][^\x22\x27]*?\.(lnk|bat|com|exe|cmd|ms[ip]|pif|ws[cfh]?)\s*[\x22\x27]/i
+/<application\s[^>]*?\s(run|url)\s*=\s*[\x22\x27][^\x22\x27]*?\.(lnk|bat|com|exe|cmd|ms[ip]|pif|ws[cfh]?)\s*[\x22\x27]/i
+/<application\s[^>]*?\s(run|url)\s*=\s*[\x22\x27][^\x22\x27]*?\.(lnk|bat|com|exe|cmd|ms[ip]|pif|ws[cfh]?)\s*[\x22\x27]/i
+/(\x25\x00|\x00\x5C)\x00a\x00f\x00t\x00e\x00r\x00m\x00i\x00d\x00n\x00i\x00g\x00h\x00t\x00\.\x00d\x00l\x00l\x00\x00\x00/i
+/<Path Data\s*=\s*[\x27|\x22]\s*L/
+/<Path Data\s*=\s*[\x27|\x22]\s*L/
+/(?:[a-z]:\x5C?){2}/i
+/(?:[a-z]:\x5C?){2}/i

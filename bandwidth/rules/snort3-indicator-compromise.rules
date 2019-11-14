@@ -1,0 +1,4 @@
+/Referer\x3a\x20[\x20-\x7E]*?\/wp\x2dadmin\/[a-z\d\x2d]+?\.php\r\n/i
+/\x2fF[^>]+?SettingContent-ms/i
+/\x2fF[^>]+?SettingContent-ms/i
+/.+\.(tor2web\.(io|fyi|me)|onion\.(nz|pet|sh|si|to|ws|in\.net))/R

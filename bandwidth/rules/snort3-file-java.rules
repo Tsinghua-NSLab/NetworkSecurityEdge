@@ -1,0 +1,13 @@
+/^\x01\x02.{0,50}[a-zA-Z]{10}\x2fPK.{0,50}[a-zA-Z]{10}\x2f[a-zA-Z]{7}\.classPK/sR
+/^\x01\x02.{0,50}[a-zA-Z]{10}\x2fPK.{0,50}[a-zA-Z]{10}\x2f[a-zA-Z]{7}\.classPK/sR
+/exploit\/(Exploit(App)?|Loader)\.class/ims
+/poc\/(Exploit|myClassLoader|pocMain|runCmd)\.class/ims
+/AccessControlContext\s*?(?P<var>\w*)\s*?=\s*?new\s*?AccessControlContext.*?SetField\x28Statement\.class,\s*?(?P<quotes1>\x22|\x27)acc(?P=quotes1),\s*?localStatement,\s*?(?P=var)/smi
+/AccessControlContext\s*?(?P<var>\w*)\s*?=\s*?new\s*?AccessControlContext.*?SetField\x28Statement\.class,\s*?(?P<quotes1>\x22|\x27)acc(?P=quotes1),\s*?localStatement,\s*?(?P=var)/smi
+/Expression\x28\s*?GetClass\x28\x22sun.awt.SunToolkit\x22\x29\s*?,\s*?\x22getField\x22/smi
+/(DisableSandboxAndDrop|ConfusedClass|FieldAccessVerifierExpl)\.class/ims
+/(DisableSandboxAndDrop|ConfusedClass|FieldAccessVerifierExpl)\.class/ims
+/Expression\x28\s*?GetClass\x28\x22sun.awt.SunToolkit\x22\x29\s*?,\s*?\x22getField\x22/smi
+/(sIda\/sId|urua\/uru)[abcd]\.classPK/ims
+/META-INF\/MANIFEST\.MFPK.{44}(?P<outerclass>[a-zA-Z]{7})\.classPK.{44}(?P=outerclass)\$[a-zA-Z]{12}\.classPK.{44}(?P=outerclass)\$[a-zA-Z]{12}\.classPK/sm
+/META-INF\/MANIFEST\.MFPK.{44}(?P<outerclass>[a-zA-Z]{7})\.classPK.{44}(?P=outerclass)\$[a-zA-Z]{12}\.classPK.{44}(?P=outerclass)\$[a-zA-Z]{12}\.classPK/sm

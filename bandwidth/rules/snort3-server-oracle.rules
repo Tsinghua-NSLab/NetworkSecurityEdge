@@ -1,0 +1,6 @@
+/\x3cvoid?\s+?((?!index).+?)/sim
+/\x3cvoid?\s+?((?!index).+?)/sim
+/\x3carray?\s+?class\s*?=\s*?(\x22|\x27)((?!byte).+?)/sim
+/\x3carray?\s+?class\s*?=\s*?(\x22|\x27)((?!byte).+?)/sim
+/\x3carray[^\x3e]+?method\s*?=/sim
+/\x3carray[^\x3e]+?method\s*?=/sim

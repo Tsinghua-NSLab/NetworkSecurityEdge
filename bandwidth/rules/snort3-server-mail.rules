@@ -1,0 +1,3 @@
+/^Content-Disposition\x3A\s*attachment/smi
+/^\s*?EHLO\s+\d[\d\x2e]{500}/
+/^\s*?HELO\s+\d[\d\x2e]{500}/

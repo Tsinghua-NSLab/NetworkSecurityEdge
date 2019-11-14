@@ -2,3 +2,4 @@
 bandwidth/.temp/
 bandwidth/log/
 bandwidth/pcap/*
+bandwidth/test.rules

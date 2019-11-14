@@ -3,6 +3,7 @@
 verbose=0
 ddos=0
 random_ip_port=0
+pattern_file="-"
 rule_count=10
 out_file=./test.rules
 pattern_range="40:41"
@@ -15,6 +16,7 @@ Usage: ./generate_rules.sh [options]
     -v                              verbose
     -d                              ddos rules
     -R                              random rule ip, any if unset. default unset
+    -p                              use regex pattern
     -n <rule_number>                set rule number, default $rule_count
     -o <output_filename>            set output file, default $out_file
     -r <min_length:max_length>      set pattern length range, default $pattern_range
@@ -31,7 +33,7 @@ cd "$(dirname $0)"
 # Argument parsing
 OPTIND=1
 
-while getopts "h?vdRmn:o:r:" opt; do
+while getopts "h?vdRp:n:o:r:" opt; do
     case "$opt" in
         h|\?)
             show_help
@@ -42,6 +44,8 @@ while getopts "h?vdRmn:o:r:" opt; do
         d)  ddos=1
             ;;
         R)  random_ip_port=1
+            ;;
+        p)  pattern_file=$OPTARG
             ;;
         n)  rule_count=$OPTARG
             ;;
@@ -80,6 +84,9 @@ if [[ $range_h -gt 1000 ]] ; then
     echo "Pattern must be shorter than 1000!" >&2; show_help; exit 1
 fi
 
+if [[ $pattern_file != "-" ]] ; then
+    rule_count=$(wc -l < $pattern_file)
+fi
 
 cp /dev/null $out_file
 
@@ -89,9 +96,6 @@ rule_i=1
 while [ "$rule_i" -le $rule_count ]
 do
     file_name=test$rule_i.pcapng
-
-    len=$(($RANDOM%($range_h-$range_l)+$range_l))
-    pattern=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $len | head -n 1)
     sid=$((100000000+$rule_i))
     if [[ $random_ip_port == 0 ]] ; then 
         src="any" ; dst="any" ; src_p="any" ; dst_p="any"
@@ -99,7 +103,14 @@ do
         src=$(get_random_ip) ; dst=$(get_random_ip) ; src_p=$RANDOM ; dst_p=$RANDOM
     fi
 
-    echo "alert tcp $src $src_p -> $dst $dst_p ( msg:\"$pattern\"; flow:established; content:\"$pattern\"; sid:$sid; )" >> $out_file
+    if [[ $pattern_file != "-" ]] ; then
+        pattern=$(sed -n -e "$rule_i"p $pattern_file)
+        echo "alert tcp $src $src_p -> $dst $dst_p ( msg:\"$pattern\"; flow:established; pcre:\"$pattern\"; sid:$sid; )" >> $out_file
+    else
+        len=$(($RANDOM%($range_h-$range_l)+$range_l))
+        pattern=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $len | head -n 1)
+        echo "alert tcp $src $src_p -> $dst $dst_p ( msg:\"$pattern\"; flow:established; content:\"$pattern\"; sid:$sid; )" >> $out_file
+    fi
 
     let "rule_i += 1"
 done

@@ -1,0 +1,8 @@
+/new(\s|%20|\+)+(java|org)/i
+/new\s+(java|org)/i
+/\x2f\x24\{\x23[^\x2f{}]+?\}(\.action)?\x2f?$/mi
+/\x2f\{\x23[^\x2f{}]+?\}(\.action)?\x2f?$/mi
+/\.action\?[^\x2f]+?=\x24\{\{[^\x2f{}]+?\}\}$/mi
+/new\s+(java|org|sun)/i
+/new\s+(java|org|sun)/i
+/new\s+(java|org|sun)/i
